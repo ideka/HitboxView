@@ -1,32 +1,23 @@
 ﻿using Blish_HUD;
-using Blish_HUD.Entities;
+using Blish_HUD.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Blish_HUD.GameService;
 
 namespace Ideka.HitboxView
 {
-    public class HitboxEntity : IEntity, IDisposable
+    public class HitboxDraw : Container
     {
         private static readonly TimeSpan SmoothingCompensation = TimeSpan.FromMilliseconds(100 / 6);
 
         public float DrawOrder => 100;  // TODO: Figure out what to set this to.
 
         public bool Smoothing { get; set; } = true;
-
-        private Color _color = Color.White;
-        public Color Color
-        {
-            get => _color;
-            set
-            {
-                _color = value;
-                if (_effect != null)
-                    _effect.DiffuseColor = _color.ToVector3();
-            }
-        }
+        public Color Color { get; set; }
+        public Color OutlineColor { get; set; }
 
         private TimeSpan _delay;
         public TimeSpan Delay
@@ -45,8 +36,8 @@ namespace Ideka.HitboxView
         public Vector3 Forward { get; private set; }
         public bool IsDisposed { get; private set; }
 
-        private static Vector3 PlayerPosition => GameService.Gw2Mumble.RawClient.AvatarPosition.ToXnaVector3();
-        private static Vector3 PlayerForward => GameService.Gw2Mumble.RawClient.AvatarFront.ToXnaVector3();
+        private static Vector3 PlayerPosition => Gw2Mumble.RawClient.AvatarPosition.ToXnaVector3();
+        private static Vector3 PlayerForward => Gw2Mumble.RawClient.AvatarFront.ToXnaVector3();
 
         private class TimePos
         {
@@ -90,31 +81,24 @@ namespace Ideka.HitboxView
             }
         }
 
-        private readonly Quad _quad;
-        private readonly Texture2D _texture;
-        private BasicEffect _effect;
+        private readonly Primitive _circle;
+        private readonly Primitive _slice;
 
         private int _lastTick;
         private TimePos _lastPopped; 
         private TimePos _lastQueued; 
         private readonly Queue<TimePos> _timePosQueue = new Queue<TimePos>();
 
-        public HitboxEntity()
+        public HitboxDraw()
         {
-            _quad = new Quad(Vector3.Zero, Vector3.Backward, Vector3.Up, 1, 1);
-            _texture = HitboxModule.ContentsManager.GetTexture("Hitbox.png");
-            GameService.Graphics.QueueMainThreadRender(graphicsDevice =>
-            {
-                if (_effect != null || IsDisposed)
-                    return;
+            ClipsBounds = false;
 
-                _effect = new BasicEffect(graphicsDevice)
-                {
-                    Texture = _texture,
-                    TextureEnabled = true,
-                    DiffuseColor = Color.ToVector3(),
-                };
-            });
+            _circle = Primitive.HorizontalCircle(0.5f, 100);
+            _slice = new Primitive(
+                new Vector3(-.5f, 0, 0),
+                new Vector3(0, 0, 0),
+                new Vector3(0, .5f, 0)
+            ).Transformed(Matrix.CreateRotationZ(MathHelper.ToRadians(-45)));
 
             Reset();
         }
@@ -126,11 +110,13 @@ namespace Ideka.HitboxView
             _timePosQueue.Clear();
         }
 
-        public void Update(GameTime gameTime)
+        public override void UpdateContainer(GameTime gameTime)
         {
-            if (GameService.Gw2Mumble.RawClient.Tick > _lastTick)
+            base.UpdateContainer(gameTime);
+
+            if (Gw2Mumble.RawClient.Tick > _lastTick)
             {
-                _lastTick = GameService.Gw2Mumble.RawClient.Tick;
+                _lastTick = Gw2Mumble.RawClient.Tick;
 
                 var newTimePos = new TimePos(gameTime.TotalGameTime);
 
@@ -157,32 +143,24 @@ namespace Ideka.HitboxView
                 apply(TimePos.Lerp(_lastPopped, _timePosQueue.Peek(), Delay, gameTime.TotalGameTime));
         }
 
-        public void Render(GraphicsDevice graphicsDevice, IWorld world, ICamera camera)
+        public override void PaintBeforeChildren(SpriteBatch spriteBatch, Rectangle bounds)
         {
-            if (_effect == null)
-                return;
+            var trs =
+                Matrix.CreateScale(1, 1, 1) *
+                Matrix.CreateRotationZ(-(float)Math.Atan2(Forward.X, Forward.Y)) *
+                Matrix.CreateTranslation(Position);
 
-            _effect.View = GameService.Gw2Mumble.PlayerCamera.View;
-            _effect.Projection = GameService.Gw2Mumble.PlayerCamera.Projection;
-
-            var worldMatrix = Matrix.CreateScale(1, 1, 1) * Matrix.CreateTranslation(Position);
-            var t = worldMatrix.Translation;
-            worldMatrix *= Matrix.CreateRotationZ(-(float)Math.Atan2(Forward.X, Forward.Y));
-            worldMatrix.Translation = t;
-            _effect.World = worldMatrix;
-
-            foreach (EffectPass pass in _effect.CurrentTechnique.Passes)
             {
-                pass.Apply();
-                graphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, _quad.Vertices, 0, 4, _quad.Indexes, 0, 2);
+                var circle = _circle.Transformed(trs).ToScreen();
+                spriteBatch.DrawPolygon(Vector2.Zero, circle, Color.Black, 3);
+                spriteBatch.DrawPolygon(Vector2.Zero, circle, Color.White, 2);
             }
-        }
 
-        public void Dispose()
-        {
-            IsDisposed = true;
-            _texture?.Dispose();
-            _effect?.Dispose();
+            {
+                var slice = _slice.Transformed(trs).ToScreen();
+                spriteBatch.DrawPolygon(Vector2.Zero, slice, Color.Black, 3, open: true);
+                spriteBatch.DrawPolygon(Vector2.Zero, slice, Color.White, 2, open: true);
+            }
         }
     }
 }

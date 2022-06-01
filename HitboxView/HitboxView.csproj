@@ -64,14 +64,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\SpriteBatchExtensions.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="World\HitboxEntity.cs" />
+    <Compile Include="Draw\HitboxDraw.cs" />
     <Compile Include="HitboxModule.cs" />
-    <Compile Include="World\Quad.cs" />
+    <Compile Include="Common\Primitive.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AsyncClipboardService, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -267,7 +268,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ref\Hitbox.png" />
+    <Folder Include="ref\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

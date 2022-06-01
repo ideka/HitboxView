@@ -6,6 +6,7 @@ using Blish_HUD.Settings;
 using Microsoft.Xna.Framework;
 using System;
 using System.ComponentModel.Composition;
+using static Blish_HUD.GameService;
 
 namespace Ideka.HitboxView
 {
@@ -23,7 +24,7 @@ namespace Ideka.HitboxView
 
         private static HitboxModule Instance { get; set; }
 
-        private HitboxEntity _hitbox;
+        private HitboxDraw _hitbox;
 
         private SettingEntry<Color> _hitboxColor;
         private SettingEntry<KeyBinding> _toggleHitboxKey;
@@ -69,14 +70,15 @@ namespace Ideka.HitboxView
 
         protected override void Initialize()
         {
-            _hitbox = new HitboxEntity()
+            _hitbox = new HitboxDraw()
             {
+                Parent = Graphics.SpriteScreen,
                 Smoothing = _hitboxSmoothing.Value,
                 Ping = _gamePing.Value,
             };
 
             if (_hitboxVisible.Value)
-                GameService.Graphics.World.AddEntity(_hitbox);
+                _hitbox.Show();
 
             _hitboxColor.SettingChanged += HitboxColorChanged;
             _toggleHitboxKey.Value.Enabled = true;
@@ -96,9 +98,10 @@ namespace Ideka.HitboxView
         private void HitboxVisibleChanged(object sender, ValueChangedEventArgs<bool> e)
         {
             _hitbox.Reset();
-            GameService.Graphics.World.RemoveEntity(_hitbox);
             if (_hitboxVisible.Value)
-                GameService.Graphics.World.AddEntity(_hitbox);
+                _hitbox.Show();
+            else
+                _hitbox.Hide();
         }
 
         private void HitboxSmoothingChanged(object sender, ValueChangedEventArgs<bool> e)
@@ -138,7 +141,6 @@ namespace Ideka.HitboxView
             _gamePingString.SettingChanged -= GamePingStringChanged;
             _gamePing.SettingChanged -= GamePingChanged;
 
-            GameService.Graphics.World.RemoveEntity(_hitbox);
             _hitbox?.Dispose();
 
             Instance = null;
