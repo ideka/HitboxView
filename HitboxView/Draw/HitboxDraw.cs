@@ -1,5 +1,6 @@
 ﻿using Blish_HUD;
 using Blish_HUD.Controls;
+using Ideka.BHUDCommon;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

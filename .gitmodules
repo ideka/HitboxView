@@ -1,0 +1,3 @@
+[submodule "HitboxView/BHUDCommon"]
+	path = HitboxView/BHUDCommon
+	url = ../BHUDCommon.git

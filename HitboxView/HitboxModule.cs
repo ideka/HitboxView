@@ -2,6 +2,7 @@
 using Blish_HUD.Input;
 using Blish_HUD.Modules;
 using Blish_HUD.Settings;
+using Ideka.BHUDCommon;
 using Microsoft.Xna.Framework;
 using System;
 using System.ComponentModel.Composition;
