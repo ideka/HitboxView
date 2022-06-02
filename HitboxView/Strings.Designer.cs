@@ -106,6 +106,24 @@ namespace Ideka.HitboxView {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hitbox Outline Color.
+        /// </summary>
+        internal static string SettingHitboxOutlineColor {
+            get {
+                return ResourceManager.GetString("SettingHitboxOutlineColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The color of the hitbox&apos;s outline..
+        /// </summary>
+        internal static string SettingHitboxOutlineColorText {
+            get {
+                return ResourceManager.GetString("SettingHitboxOutlineColorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hitbox Smoothing.
         /// </summary>
         internal static string SettingHitboxSmoothing {

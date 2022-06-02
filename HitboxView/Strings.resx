@@ -132,6 +132,12 @@
   <data name="SettingHitboxColorText" xml:space="preserve">
     <value>The color of the hitbox.</value>
   </data>
+  <data name="SettingHitboxOutlineColor" xml:space="preserve">
+    <value>Hitbox Outline Color</value>
+  </data>
+  <data name="SettingHitboxOutlineColorText" xml:space="preserve">
+    <value>The color of the hitbox's outline.</value>
+  </data>
   <data name="SettingHitboxSmoothing" xml:space="preserve">
     <value>Hitbox Smoothing</value>
   </data>
