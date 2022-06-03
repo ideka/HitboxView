@@ -1,11 +1,11 @@
 {
   "name": "Hitbox View",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "namespace": "Ideka.HitboxView",
   "package": "HitboxView.dll",
   "manifest_version": 1,
 
-  "description": "See your character's hitbox, adjusted for ping.\nWarning: Hitbox size may not be correct when mounted.",
+  "description": "See your character's hitbox, adjusted for ping.\nNow with mount-accurate hitboxes.",
   "dependencies": {
     "bh.blishhud": ">=0.11.7"
   },
