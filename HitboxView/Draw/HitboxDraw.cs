@@ -1,5 +1,6 @@
 ﻿using Blish_HUD;
 using Blish_HUD.Controls;
+using Gw2Sharp.Models;
 using Ideka.BHUDCommon;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -144,10 +145,28 @@ namespace Ideka.HitboxView
                 apply(TimePos.Lerp(_lastPopped, _timePosQueue.Peek(), Delay, gameTime.TotalGameTime));
         }
 
+        // TODO: Skimmer and Skiff need better testing to confirm their sizes
+        private static readonly Dictionary<MountType, Vector2> Sizes = new Dictionary<MountType, Vector2>
+        {
+            [MountType.None] = Vector2.One * 1,
+            [MountType.Raptor] = Vector2.One * 2.8f,
+            [MountType.Springer] = Vector2.One * 2.2f,
+            [MountType.Skimmer] = Vector2.One * 3.1f,
+            [MountType.Jackal] = Vector2.One * 2.2f,
+            [MountType.Griffon] = Vector2.One * 2.7f,
+            [MountType.RollerBeetle] = Vector2.One * 2.8f,
+            [MountType.Warclaw] = Vector2.One * 1.7f,
+            [MountType.Skyscale] = Vector2.One * 2.7f,
+            [MountType.Skiff] = new Vector2(3.1f, 11.1f),
+            [MountType.SiegeTurtle] = Vector2.One * 3.9f,
+        };
+
         public override void PaintBeforeChildren(SpriteBatch spriteBatch, Rectangle bounds)
         {
+            var scale = Sizes.TryGetValue(Gw2Mumble.PlayerCharacter.CurrentMount, out var s) ? s : Vector2.One;
+
             var trs =
-                Matrix.CreateScale(1, 1, 1) *
+                Matrix.CreateScale(scale.X, scale.Y, 1) *
                 Matrix.CreateRotationZ(-(float)Math.Atan2(Forward.X, Forward.Y)) *
                 Matrix.CreateTranslation(Position);
 
@@ -157,6 +176,7 @@ namespace Ideka.HitboxView
                 spriteBatch.DrawPolygon(Vector2.Zero, circle, Color.White, 2);
             }
 
+            if (scale.X == scale.Y)
             {
                 var slice = _slice.Transformed(trs).ToScreen();
                 spriteBatch.DrawPolygon(Vector2.Zero, slice, Color.Black, 3, open: true);

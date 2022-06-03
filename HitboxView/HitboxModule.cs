@@ -11,6 +11,8 @@ namespace Ideka.HitboxView
     [Export(typeof(Module))]
     public class HitboxModule : Module
     {
+        //private static HitboxModule Instance { get; set; }
+
         private HitboxDraw _hitbox;
 
         private GenericSetting<Color> _hitboxColor;
@@ -23,6 +25,7 @@ namespace Ideka.HitboxView
         [ImportingConstructor]
         public HitboxModule([Import("ModuleParameters")] ModuleParameters moduleParameters) : base(moduleParameters)
         {
+            //Instance = this;
         }
 
         protected override void DefineSettings(SettingCollection settings)
@@ -82,6 +85,8 @@ namespace Ideka.HitboxView
             _hitboxSmoothing?.Dispose();
             _gamePing?.Dispose();
             _hitbox?.Dispose();
+
+            //Instance = null;
         }
     }
 }
