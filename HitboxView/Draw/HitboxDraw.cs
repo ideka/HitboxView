@@ -163,6 +163,9 @@ namespace Ideka.HitboxView
 
         public override void PaintBeforeChildren(SpriteBatch spriteBatch, Rectangle bounds)
         {
+            if (Gw2Mumble.UI.IsMapOpen || !GameIntegration.Gw2Instance.IsInGame)
+                return;
+
             var scale = Sizes.TryGetValue(Gw2Mumble.PlayerCharacter.CurrentMount, out var s) ? s : Vector2.One;
 
             var trs =
