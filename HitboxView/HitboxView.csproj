@@ -64,6 +64,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BHUDCommon\MathUtils.cs" />
     <Compile Include="BHUDCommon\Settings\GenericSetting.cs" />
     <Compile Include="BHUDCommon\Settings\KeyBindingSetting.cs" />
     <Compile Include="BHUDCommon\Rendering\Primitive.cs" />
