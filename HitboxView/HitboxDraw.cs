@@ -96,6 +96,8 @@ public class HitboxDraw : Container
         Reset();
     }
 
+    protected override CaptureType CapturesInput() => CaptureType.None;
+
     public void Reset()
     {
         _lastQueued = null;
