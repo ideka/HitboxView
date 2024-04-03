@@ -7,7 +7,7 @@
 
   "description": "See your character's hitbox, adjusted for ping.\nNow with mount-accurate hitboxes.",
   "dependencies": {
-    "bh.blishhud": ">=0.11.7"
+    "bh.blishhud": "^1.0.0"
   },
   "url": "https://github.com/ideka/HitboxView",
   "contributors": [

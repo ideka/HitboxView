@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Launch": {
+      "commandName": "Executable",
+      "executablePath": "E:\\Profile\\Local Programs\\BlishHUD\\Blish HUD.exe",
+      "commandLineArgs": "--mumble MumbleLink_1 -d -M \"$(ProjectDir)\\$(BaseOutputPath)\\$(PlatformName)\\$(Configuration)/$(TargetFramework)\\$(TargetName).bhm\" -s \"$(ProjectDir)\\BlishSettings\""
+    }
+  }
+}

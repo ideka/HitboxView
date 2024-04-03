@@ -1,3 +1,6 @@
-[submodule "HitboxView/BHUDCommon"]
-	path = HitboxView/BHUDCommon
+[submodule "BHUDCommon"]
+	path = BHUDCommon
 	url = ../BHUDCommon.git
+[submodule "NetCommon"]
+	path = NetCommon
+	url = ../NetCommon.git

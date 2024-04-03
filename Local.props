@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <CommonPrefix>HitboxView.</CommonPrefix>
+  </PropertyGroup>
+</Project>
