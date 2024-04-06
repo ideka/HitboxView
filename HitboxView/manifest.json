@@ -1,6 +1,6 @@
 {
   "name": "Hitbox View",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "namespace": "Ideka.HitboxView",
   "package": "HitboxView.dll",
   "manifest_version": 1,
