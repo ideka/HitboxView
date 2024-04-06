@@ -50,10 +50,10 @@ public class HitboxModule([Import("ModuleParameters")] ModuleParameters modulePa
 
     protected override void Initialize()
     {
-        _hitbox = new HitboxDraw()
+        _hitbox = _dc.Add(new HitboxDraw()
         {
             Parent = Graphics.SpriteScreen,
-        };
+        });
 
         _dc.Add(_hitboxColor.OnChangedAndNow(value => _hitbox.Color = value));
         _dc.Add(_hitboxOutlineColor.OnChangedAndNow(value => _hitbox.OutlineColor = value));
