@@ -11,7 +11,7 @@ using static Blish_HUD.GameService;
 
 namespace Ideka.HitboxView;
 
-public class HitboxDraw : Container
+public class HitboxDraw : Control
 {
     private static readonly TimeSpan SmoothingCompensation = TimeSpan.FromMilliseconds(100 / 6);
     private static readonly Primitive Circle = Primitive.HorizontalCircle(.5f, 100);
@@ -105,9 +105,9 @@ public class HitboxDraw : Container
         _timePosQueue.Clear();
     }
 
-    public override void UpdateContainer(GameTime gameTime)
+    public override void DoUpdate(GameTime gameTime)
     {
-        base.UpdateContainer(gameTime);
+        base.DoUpdate(gameTime);
 
         if (Gw2Mumble.RawClient.Tick > _lastTick)
         {
@@ -154,7 +154,7 @@ public class HitboxDraw : Container
         [MountType.SiegeTurtle] = Vector2.One * 3.9f,
     };
 
-    public override void PaintBeforeChildren(SpriteBatch spriteBatch, Rectangle bounds)
+    protected override void Paint(SpriteBatch spriteBatch, Rectangle bounds)
     {
         if (Gw2Mumble.UI.IsMapOpen || !GameIntegration.Gw2Instance.IsInGame)
             return;
