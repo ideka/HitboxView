@@ -96,7 +96,7 @@ public class HitboxDraw : Container
         Reset();
     }
 
-    protected override CaptureType CapturesInput() => CaptureType.None;
+    protected override CaptureType CapturesInput() => CaptureType.DoNotBlock;
 
     public void Reset()
     {
